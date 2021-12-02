@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import axios from "axios";
-
-//!Components import
-import Countries from "./components/Countries";
+import ShowCountries from "./components/ShowCountries";
+import SearchCountries from "./components/SearchCountries";
+import FilterCountries from "./components/FilterCountries";
+import Loading from "./components/Loading";
+import HeaderTitle from "./components/HeaderTitle";
 
 function App() {
+  //! useStates
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [inputValue, setInputValue] = useState("");
 
+  //! useEffects
   useEffect(() => {
-    getCountries("all");
-  }, []);
+    getCountriesByName(inputValue);
+  }, [inputValue]);
 
+  //! filterCountry
   const getCountries = async (region) => {
     try {
       setLoading(true);
@@ -27,38 +33,38 @@ function App() {
     }
   };
 
+  //! searchCountry
+  const getCountriesByName = async (regionName) => {
+    try {
+      setLoading(true);
+      await axios
+        .get(
+          `${
+            regionName
+              ? `https://restcountries.com/v3.1/name/${regionName}`
+              : `https://restcountries.com/v3.1/all`
+          }`
+        )
+        .then((res) => setCountries(res.data));
+    } catch (error) {
+      console.log("veri yok");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
-      <h2 className="mt-3 text-center">Ülkeler ({countries.length})</h2>
+      <HeaderTitle countries={countries} />
 
-      <div className="search-buttons flex-wrap d-flex justify-content-center mb-3">
-        <button onClick={() => getCountries("all")}>Tüm Kıtalar</button>
-        <button onClick={() => getCountries("region/europe")}>Avrupa</button>
-        <button onClick={() => getCountries("region/asia")}>Asya</button>
-        <button onClick={() => getCountries("region/america")}>America</button>
-        <button onClick={() => getCountries("region/africa")}>Afrika</button>
-        <button onClick={() => getCountries("region/america")}>
-          Okyanusya
-        </button>
-        <button onClick={() => getCountries("region/antarctic")}>
-          Antarktika
-        </button>
-      </div>
+      <FilterCountries
+        getCountries={getCountries}
+        setCountries={setCountries}
+      />
 
-      {loading ? (
-        <div className="lds-ellipsis container d-flex mt-5">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      ) : (
-        <div className="container">
-          <div className="row gy-3 d-flex justify-content-center">
-            <Countries countries={countries} />
-          </div>
-        </div>
-      )}
+      <SearchCountries inputValue={inputValue} setInputValue={setInputValue} />
+
+      {loading ? <Loading /> : <ShowCountries countries={countries} />}
     </>
   );
 }
