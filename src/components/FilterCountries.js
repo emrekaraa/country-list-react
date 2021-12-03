@@ -9,9 +9,6 @@ function FilterCountries({ getCountries }) {
       <button onClick={() => getCountries("region/america")}>America</button>
       <button onClick={() => getCountries("region/africa")}>Afrika</button>
       <button onClick={() => getCountries("region/america")}>Okyanusya</button>
-      <button onClick={() => getCountries("region/antarctic")}>
-        Antarktika
-      </button>
     </div>
   );
 }
