@@ -1,7 +1,7 @@
-# Netflix Clone React Demo Link
-Click To View: [https://netflix-clone-react-1e976.firebaseapp.com/](https://netflix-clone-react-1e976.firebaseapp.com/)
+# Country List React Demo Link
+Click To View: [https://country-list-reactjs.netlify.app/](https://country-list-reactjs.netlify.app/)
 
-Api source link: [https://www.themoviedb.org/documentation/api](https://www.themoviedb.org/documentation/api)
+Api source link: [https://restcountries.com/](https://restcountries.com/)
 
 ## Getting Started with Create React App
 
